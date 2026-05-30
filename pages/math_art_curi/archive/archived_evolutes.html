@@ -1,0 +1,51 @@
+<html>
+<head>
+<link rel="stylesheet" href="../../style.css">
+<title> Tony Zeng - Evolutes and Extensions </title>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body>
+<h1>Evolutes and Extensions</h1>
+<p><a href = "https://en.wikipedia.org/wiki/Evolute">Wikipedia</a> provides a nice definition of evolutes for parametric curves. One definition is that the evolute of some curve \(\gamma\) is the envelope of the curve's normals. What we will consider is the envelope of the lines off by a fixed angle \(\theta\) to the normals of \(\gamma\).</p>
+<h2>Definition/Derivation</h2>
+<p>For some \(U \subseteq \mathbb{R}\), let \(f : U \rightarrow \mathbb{R}\) be some \(C^2\) function, and let \(\gamma(t) = (t, f(t))\). At any point \((x_0, f(x_0))\), the normal to \(\gamma\) is given by the line \(y - f(x_0) = \frac{-1}{f'(x_0)}(x - x_0)\). For a fixed angle \(\theta\), the line forming an angle of measure \(\theta\) from the normal (in the counterclockwise direction) can be constructed as follows. The vector \((1, f'(x_0))\) is parallel to the normal of \(\gamma\) at \(x_0\), so we simply apply the appropriate rotation matrix to this vector, and construct the line with that slope going through the point \((x_0, f(x_0))\).</p>
+
+$$ \begin{bmatrix}
+\cos(\theta) & -\sin(\theta) \\
+\sin\theta) & \cos(\theta)
+\end{bmatrix} \begin{pmatrix}
+1 \\ f'(x_0)
+\end{pmatrix} = \begin{pmatrix}
+\cos(\theta) - f'(x_0)\sin(\theta) \\
+\sin(\theta) + f'(x_0)\cos(\theta)
+\end{pmatrix}$$
+
+<p>Rescaling this vector so that the first entry is one yields the following line.</p>
+
+$$ y - f(x_0) = \frac{\sin(\theta) + f'(x_0)\cos(\theta)}{\cos(\theta) - f'(x_0)\sin(\theta)}(x - x_0) $$
+
+<p>Then we can explicitly compute the intersection of the two lines</p>
+$$ y - f(x_0) = \frac{\sin(\theta) + f'(x_0)\cos(\theta)}{\cos(\theta) - f'(x_0)\sin(\theta)}(x - x_0) \quad \text{and} \quad y - f(x_0 + h) = \frac{\sin(\theta) + f'(x_0 + h)\cos(\theta)}{\cos(\theta) - f'(x_0 + h)\sin(\theta)}(x - x_0), $$
+<p>as the following</p>
+$$ f(x_0) + \frac{\sin(\theta) + f'(x_0)\cos(\theta)}{\cos(\theta) - f'(x_0)\sin(\theta)}(x - x_0) = f(x_0 + h) + \frac{\sin(\theta) + f'(x_0 + h)\cos(\theta)}{\cos(\theta) - f'(x_0 + h)\sin(\theta)}(x - x_0) $$
+$$\Rightarrow f(x_0 + h) - f(x_0) = (x - x_0) \left[ \frac{\sin(\theta) + f'(x_0 + h)\cos(\theta)}{\cos(\theta) - f'(x_0 + h)\sin(\theta)} - \frac{\sin(\theta) + f'(x_0)\cos(\theta)}{\cos(\theta) - f'(x_0)\sin(\theta)} \right]$$
+<p>where</p>
+$$\frac{\sin(\theta) + f'(x_0 + h)\cos(\theta)}{\cos(\theta) - f'(x_0 + h)\sin(\theta)} - \frac{\sin(\theta) + f'(x_0)\cos(\theta)}{\cos(\theta) - f'(x_0)\sin(\theta)}$$
+$$ = \frac{(\sin(\theta) + f'(x_0 + h)\cos(\theta))(\cos(\theta) - f'(x_0)\sin(\theta)) - (\sin(\theta) + f'(x_0)\cos(\theta))(\cos(\theta) - f'(x_0 + h)\sin(\theta))}{(\cos(\theta) - f'(x_0 + h)\sin(\theta))(\cos(\theta) - f'(x_0)\sin(\theta))}$$
+which reduces nicely via some trigonometric identities to
+$$ = \frac{f'(x_0 + h) - f'(x_0 + h)f'(x_0)\cos(\theta)\sin(\theta) - f'(x_0) }{(\cos(\theta) - f'(x_0 + h)\sin(\theta))(\cos(\theta) - f'(x_0)\sin(\theta))}$$
+
+<p>Note: Although we have only done the work for functions of \(x\), morally speaking there is nothing stopping us from doing the same for parametric curves. Indeed, you could just partition some parametric curve into components, each of which being a real-valued function, and construct our extended evolute for each component. I've not looked into this for some years now, but last I did, I was unable to actually derive a non-piecewise closed form for parametric curves.</p>
+
+<h2>Desmos links</h2>
+<p>Intermediate graphs:</p>
+<ul>
+	<li></li>
+	<li></li>
+	<li></li>
+</ul>
+
+<p>Final graph:</p>
+</body>
+</html>

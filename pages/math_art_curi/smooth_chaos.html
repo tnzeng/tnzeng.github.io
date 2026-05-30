@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Chaos Game</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+	  	body {
+	    	margin: 0;
+	    	overflow: hidden;
+	  	}
+	</style>
+  </head>
+  <body>
+  	<h1> Updated Chaos Game Continuous Transition DEBUG</h1>
+  	<p> Press spacebar to play. Adjust input as desired.</p>
+    <textarea id="input" name="input" rows="1" cols="20" maxlength="50" wrap="hard">-1,0,1</textarea>
+  	<canvas class="myCanvas">
+ 		<p>Error Shenans???</p>
+	</canvas>
+    <script>
+    	"use strict";
+
+      //Setup canvas
+      var canvas = document.querySelector('.myCanvas');
+      var width = canvas.width = window.innerWidth;
+      var height = canvas.height = window.innerHeight;
+      var ctx = canvas.getContext('2d');
+
+      //An array containing the choices
+      var choices;
+      //Sets the choices of which of the vertices can be the next random choice
+      function setChoices(ch){
+        //choices = [0,1,2];
+        choices=[];
+        var i;
+        for (i=0; i < ch.length; i++){
+          choices.push(parseInt(ch[i],10));
+        }
+      }
+
+      var numVertices;
+      //Sets how many vertices there are to be depending on choices
+      function setNumVertices(){
+        var i;
+        var max=choices[0]; var min=choices[0];
+        for (i = 1; i < choices.length; i++){
+          if (choices[i] > max){
+            max = choices[i];
+          } else if (choices[i] < min){
+            min = choices[i];
+          }
+        }
+        numVertices = max - min + 2; 
+      }
+
+      //Angle params
+      var angle; var angleStart; var angleInc; var angleEnd;
+      //Constant numFrames
+      var numFrames = 100;
+      //Establishes angle boundaries and increment
+      function setAngle(frames, vert){
+        angleStart = 0;
+        angleEnd = Math.PI*2/(vert-1);
+        angleInc = (angleEnd-angleStart)/frames;
+        angle = angleStart;
+      }
+
+      //Arrays containing the coordinates of the vertices
+      var verticesX; var verticesY;
+      //Establishes the positions of the vertices
+      function setVertices(ang, vert){
+        //ang - internal angle of polygon
+        //vert - number of vertices
+        verticesX = [];
+        verticesY = [];
+        var i;
+        if (vert%2 == 0){
+          for (i = 0; i < vert; i++){
+            verticesX.push(Math.cos((i-vert/2+1)*ang-ang/2));
+            verticesY.push(Math.sin((i-vert/2+1)*ang-ang/2));
+          }
+        } else {
+          for (i = 0; i < vert; i++){
+            verticesX.push(Math.cos((i-Math.floor(vert/2))*ang));
+            verticesY.push(Math.sin((i-Math.floor(vert/2))*ang));
+          }
+        }
+      }
+
+      //Screen position settings
+      var centerX = width/2; var centerY = 2*height/5; var radius = 3*height/8;
+      //Draw polygon
+      function drawVertices(vx,vy,cx,cy,r){
+        //vx - array of x coords of vertices
+        //vy - array of y coords of vertices
+        //cx - x coord of polygon center
+        //cy - y coord of polygon center
+        //r - radius of polygon
+
+        //Draws polygon
+        ctx.strokeStyle = 'rgb(255,255,255)';
+        ctx.lineWidth = 2;
+        var i;
+        ctx.beginPath();
+        ctx.moveTo(moveToCenterX(vx[0],cx,r),moveToCenterY(vy[0],cy,r));
+        for (i = 0; i < vx.length - 1; i++){
+          ctx.lineTo(moveToCenterX(vx[i+1],cx,r),moveToCenterY(vy[i+1],cy,r));
+        }
+        ctx.stroke();
+        ctx.closePath();
+
+        //Draws sector dividers
+        ctx.strokeStyle = 'rgb(50,50,50)';
+        ctx.lineWidth = 1;
+        for (i = 0; i < vx.length; i++){
+          ctx.beginPath();
+          ctx.moveTo(cx,cy);
+          ctx.lineTo(moveToCenterX(vx[i],cx,r),moveToCenterY(vy[i],cy,r));
+          ctx.stroke();
+          ctx.closePath();
+        }
+      }
+
+      function moveToCenterX(px, cx, r){
+        //px - theoretical x coord
+        //cx - x coord of center of polygon
+        //r - radius
+        //Output: screen x coord
+        return cx+r*px;
+      }
+      function moveToCenterY(py, cy, r){
+        //py - theoretical y coord
+        //cy - y coord of center of polygon
+        //r - radius
+        //Output: screen y coord
+        return cy-r*py;
+      }
+
+      //Runs the chaos game
+      function run(vx,vy,cx,cy,r,ang,iter,options,col){
+        //vx - array of x coords of vertices
+        //vy - array of y coords of vertices
+        //cx - x coord of polygon center
+        //cy - y coord of polygon center
+        //r - radius of polygon
+        //iter - number of iterations to run
+        //options - choices
+        //col - ctx.fillStyle
+
+        var vert = vx.length;
+
+        var x = 0; var y = 0;
+        var xTemp; var yTemp;
+        //v is vertex index
+        var v = Math.floor(vert/2);
+        var changeV;
+        //parity true if vertices is even
+        var parity = (vert%2 == 0);
+        var arcTanPoint;
+        //integer representing which sector of polygon point is in
+        var sector;
+
+        var cosVals; var sinVals; var trigVals;
+        trigVals = setTrigVals(ang,vert);
+        cosVals = trigVals.cosine; sinVals = trigVals.sine;
+
+        var lowerSectorBound; var upperSectorBound;
+        lowerSectorBound = parity ? -ang/2 : 0;
+        upperSectorBound = lowerSectorBound + ang;
+
+        var debug = 500;
+        var debugBool = false;
+        //console.log(options);
+
+        var i;
+        for (i = 0; i < iter; i++){
+          //Correct if v is out of bounds
+          //CHECK IF VALID???
+          /*if (i < debug){
+            console.log(i,x,y,v);
+          }*/
+          if (v >= vert){
+            xTemp = x; yTemp = y;
+            x = xTemp*cosVals[v - vert + 1] - yTemp*(-1)*sinVals[v - vert + 1];
+            y = xTemp*(-1)*sinVals[v - vert + 1] + yTemp*cosVals[v - vert + 1];
+            v = vert - 1;
+          }
+          if (v < 0){
+            xTemp = x; yTemp = y;
+            x = xTemp*cosVals[-v] - yTemp*sinVals[-v];
+            y = xTemp*sinVals[-v] + yTemp*cosVals[-v];
+            v = 0;
+          }
+          /*if (i < debug){
+            console.log(i,x,y,v);
+          }*/
+          x = (x+vx[v])/2; y = (y+vy[v])/2;
+          arcTanPoint = Math.atan2(y,x);
+          //Compress?
+          if (arcTanPoint < lowerSectorBound || arcTanPoint > upperSectorBound){
+            if (parity){
+              sector = Math.floor((arcTanPoint+ang/2)/ang);
+            } else {
+              sector = Math.floor(arcTanPoint/ang);
+            }
+            v -= sector;
+            xTemp = x; yTemp = y;
+            //Fix 
+            x = xTemp*cosVals[Math.abs(sector)] - yTemp*Math.sign(-sector)*sinVals[Math.abs(sector)];
+            y = xTemp*Math.sign(-sector)*sinVals[Math.abs(sector)] + yTemp*cosVals[Math.abs(sector)];
+          }
+
+          drawPoint(x,y,cx,cy,r,col);
+          drawComplete(x,y,cx,cy,r,col,cosVals[1],sinVals[1]);
+          changeV = options[Math.floor(Math.random()*options.length)];
+          v += changeV;
+        }
+      }
+      function setTrigVals(ang,max){
+        var coss = []; var sins = [];
+        var j;
+        for (j = 0; j < 3*max + 1; j++){
+          coss.push(Math.cos(j*ang));
+          sins.push(Math.sin(j*ang));
+        }
+        return {
+          cosine: coss,
+          sine: sins
+        };
+      }
+      //Draws a point (px,py) relative to (cx,cy) distance r away, color col
+      function drawPoint(px,py,cx,cy,r,col){
+        //px - theoretical x coord
+        //py - theoretical y coord
+        //cx - x coord of polygon center
+        //cy - y coord of polygon center
+        //r - radius of polygon
+        //col - ctx.fillStyle
+        ctx.fillStyle = col;
+        ctx.fillRect(cx+r*px,cy-r*py,1,1);
+      }
+
+      function drawComplete(px,py,cx,cy,r,col,cosAng,sinAng){
+        //px - theoretical x coord
+        //py - theoretical y coord
+        //cx - x coord of polygon center
+        //cy - y coord of polygon center
+        //r - radius of polygon
+        //col - ctx.fillStyle
+        ctx.fillStyle = col;
+
+        var X = px; var Y = py;
+        var tempX; var tempY;
+        var j;
+        for (j = 0; j < Math.floor(numVertices/2) - 1; j++){
+          tempX = X; tempY = Y;
+          X = tempX*cosAng - tempY*sinAng;
+          Y = tempX*sinAng + tempY*cosAng;
+          drawPoint(X,Y,cx,cy,r,col);
+        }
+        X = px; Y = py;
+        var end = numVertices % 2;
+        for (j = 0; j < Math.floor(numVertices/2) - 1 + end; j++){
+          tempX = X; tempY = Y;
+          X = tempX*cosAng - tempY*(-sinAng);
+          Y = tempX*(-sinAng) + tempY*cosAng;
+          drawPoint(X,Y,cx,cy,r,col);
+        }
+      }
+
+      function clear(){
+        ctx.clearRect(0,0,width,height);
+      }
+      
+      function main(e){
+        //MAIN
+        if (e.which == 32){
+          var str = document.getElementById("input").value;
+          setChoices(str.split(","));
+          setNumVertices();
+          setAngle(numFrames,numVertices);
+          window.requestAnimationFrame(animate);
+        }
+      }
+
+      var colors = 'rgba(200,0,255,0.4)';
+      var iterations = 5000;
+      function animate(e){
+        clear();
+        if (angle > angleEnd){
+          angle = angleEnd;
+          setVertices(angle,numVertices);
+          drawVertices(verticesX,verticesY,centerX,centerY,radius);
+          run(verticesX,verticesY,centerX,centerY,radius,angle,iterations,choices,colors);
+        } else {
+          setVertices(angle,numVertices);
+          drawVertices(verticesX,verticesY,centerX,centerY,radius);
+          run(verticesX,verticesY,centerX,centerY,radius,angle,iterations,choices,colors);
+
+          if (angle < angleEnd){
+            angle += angleInc;
+            window.requestAnimationFrame(animate);
+          }
+        }
+      }
+
+      
+
+      window.addEventListener("keyup",main);
+
+      //DEBUG
+      var str = document.getElementById("input").value;
+      setChoices(str.split(","));
+      setNumVertices();
+      angle = 100*Math.PI/180;
+      setVertices(angle,numVertices);
+      drawVertices(verticesX,verticesY,centerX,centerY,radius);
+      run(verticesX,verticesY,centerX,centerY,radius,angle,iterations,choices,colors);
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,16 @@
+table, td {
+	border:1px solid black;
+}
+
+table {
+	border-spacing: 5px;
+}
+
+td {
+	padding: 5px;
+	text-align:center;
+}
+
+.center {
+	text-align: center;
+}

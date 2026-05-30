@@ -1,0 +1,27 @@
+<html>
+	<head>
+		<title> Tony Zeng - Desmos (Popcorn) </title>
+		<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+		</script>
+	</head>
+	<body>
+		<h1>Thomae's Popcorn Function</h1>
+		<p>Thomae's function is a common function presented in introductory analysis courses which challenges students' intuition of what it means to be continuous.</p>
+		<p><a href="https://www.desmos.com/calculator/lzlry177n8">Desmos Link</a></p>
+		<p><img src="../imgs/popcorn_thumbnail.png" height="384"></p>
+		How could we visualize Thomae's Popcorn Function? The key idea is to enumerate as many rationals as is reasonable. Our technique to achieve this is encapsulated in lines 6-10.
+		<ol start = "6">
+		<li>\(P_0 = [(i, j)\ \text{for}\ i = [0\ldots N], j = [1\ldots N]]\)</li>
+		<li>\(g(p) = \text{GCD}(p.x, p.y)\)</li>
+		<li>\(Q_0 = P_0[g(P_0) = 1]\)</li>
+		<li>\(Q_1 = Q_0[Q_0.x \le Q_0.y]\)</li>
+		<li>\(Q = \left[\left( \frac{q_1.x}{q_1.y}, \frac{1}{q_1.y}\right)\ \text{for}\ q_1 = Q_1\right]\)</li>
+		</ol>
+		<p>We start in line 6 by using list comprehension to eunmerate all ordered pairs \((i, j)\) with \(i\) non-negative, and \(j\) positive, and both \(i, j\) bounded above by some \(N\).</p>
+		<p>Line 7 defines a function which takes a point and returns the GCD of its two components.</p>
+		<p>In line 8, we make use of Desmos's logical indexing. \(P_0[g(P_0) = 1]\) is a sub-list of \(P_0\) consisting of all elements \(p \in P_0\) such that \(g(p) = 1\). In other words, we extract from \(P_0\) all elements whose components have GCD equal to 1.</p>
+		<p>In a similar fashion, line 9 simply extracts from \(Q_0\) the elements whose \(x\) coordinate (numerator) is at most its \(y\) coordinate (denominator). This serves to restrict our rationals to \([0, 1]\).</p>
+		<p>Finally, in line 10, we render a graph of our function by enumerating all points of the form \(\left( \frac{r}{s}, \frac{1}{s}\right)\) for rationals \(\frac{r}{s}\) with \(\text{GCD}(r, s) = 1\). </p>
+		<p>The remaining lines serve only aesthetic purposes.</p>
+	</body>
+</html>

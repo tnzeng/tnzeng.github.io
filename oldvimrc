@@ -1,0 +1,60 @@
+set number
+filetype plugin indent on
+set shiftwidth=4
+set tabstop=4
+set hidden
+set foldmethod=marker
+set lcs=tab:>-,trail:_
+set list
+
+" Statusline
+set laststatus=2
+set statusline=[%n]\  
+set statusline+=%.30F
+set statusline+=\ -\  
+set statusline+=FileType:
+set statusline+=%y
+set statusline+=%=
+set statusline+=Column:\  
+set statusline+=%c%V
+set statusline+=\ -\  
+set statusline+=Line:\  
+set statusline+=%l
+set statusline+=/
+set statusline+=%L
+set statusline+=\ -\  
+set statusline+=%2p
+set statusline+=%%
+
+" Leaders
+let mapleader = "-"
+let maplocalleader = "\'"
+
+" Escape
+inoremap jk 
+
+" Mappings
+nnoremap <leader>w :w
+nnoremap <leader>q :q
+nnoremap <leader>h :split
+nnoremap <leader>v :vsplit
+nnoremap <leader>ef :e 
+nnoremap <leader>ev :vsplit $MYVIMRC
+nnoremap <leader>ehv :split $MYVIMRC
+nnoremap <leader>sv :source $MYVIMRC
+nnoremap <leader>z zf}
+nnoremap <leader>b :bn
+nnoremap <leader>t :tabn
+nnoremap <leader>T :tabN
+nnoremap <leader>r :%retab!
+
+" Scrolling
+let @j = "5"
+let @k = "5"
+nnoremap <leader>j @j
+nnoremap <leader>k @k
+
+colorscheme ron
+nnoremap <leader>c0 :colorscheme elflord
+nnoremap <leader>c1 :colorscheme ron
+nnoremap <leader>c2 :colorscheme morning

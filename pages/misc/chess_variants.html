@@ -1,0 +1,38 @@
+<html>
+	<head>
+		<title> Tony Zeng - Chess Variants </title>
+		<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+		</script>
+	</head>
+	<body>
+		<h1>Chess Variants</h1>
+		<p>First and foremost, I am by no means an expert in chess. I am familiar with the rules of how to play, some basic tactics, and very little regarding positional play. That said, I still enjoy a game with a friend on occasion.</p>
+		<p>Sometimes, to compensate for my lack of understanding of how the game should be played, I'll play a variant. Here I'll describe and discuss two particular variants that, as far as I'm aware, are not widely known.</p>
+		<h2>M&ouml;bius Chess</h2>
+		<p>To my knowledge, there does exist at least one notion of M&ouml;bius chess (see <a href="https://www.chessvariants.com/shape.dir/moebius.html">here</a>), but the one we will discuss here differs.</p>
+		<h3>Configuration and Piece Movement</h3>
+		<p>Played on the standard chess board with pieces arranged normally, M&ouml;bius chess identifies the right edge of the board with the left side of the board with a twist. Concretely, this means that from the perspective of white, the left side of 'a1' is the same as the right side of 'h8', the left side of 'a2' is the right side of 'h7', etc. This has immediate and drastic consequences. First, the four knights are actually eyeing the 'a2', 'a7,', 'h2', and 'h7' pawns, though there is no immediate threat as the rooks guard them. Second, and perhaps more obviously, we have two pairs of opposite colored rooks directly adjacent to each other! This allows white the opening move 'Rxh8', which is surely absurd (though interesting to think about), so we address this by rearranging the initial board configuration.</p>
+		<p>Our new configuration places the rooks where the bishops normally start, and stagger the knights and bishops in the way shown below such that all pawns are initially guarded.</p>
+		<p>Now we address the remaining ambiguities: pawns, bishops, and queens. How do these pieces interact with the "edges" of the board? Understanding bishops will allow us to understand queens.</p>
+		<p>Suppose we have a bishop on 'c1' on an otherwise empty board. Looking to the left, we see that it has vision of 'b2' and 'a3'. On a normal board, we would stop here, but instead the bishop should have vision on whatever square is to the "left" of 'a4', which, by our identification, is 'h5'. What comes next depends on the orientation reversing property of M&ouml;bius strips: the next square in sight for our bishop is actually 'g4'. This is because we really want to be looking at the square two to the left of 'a5'. We continue and see that the rest of this line of sight for the bishop consists of 'f3', 'e2', and 'd1'.</p>
+		<p>Similarly, if we have white pawn on 'a3' and a black pawn on 'h5', white can capture the black pawn on 'h5'. What makes this interesting, however, is that now the white pawn is facing "backwards". From 'h5', the white pawn can advance to 'h4', down to 'h1', where it can promote.</p>
+		<h3>Discussion</h3>
+		<p>Notice the power of of queens and rooks. On an empty board, a rook controls 22 squares compared to the 15 in standard chess. The queen's power becomes truly insane on an empty board. Even bishops and knights control more squares, even next to what would be "edges" on a normal board. It isn't clear to me how this should affect valuation of the pieces.</p>
+		<p>An interesting idea is that backwards promotion with a pawn that captures off the "edges" could be viable as a serious threat. Since the pawn advances closer to its own pieces, it may be easier to protect.</p>
+		<h4>Questions</h4>
+		<p>Is king and two bishops vs. king a winning endgame?</p>
+		<p>In standard chess the answer is yes, where the bishops and the king work together to shepherd the opposing king to a corner. In M&ouml;bius chess, however, there are no corners.</p>
+		<h2>&chi;ess</h2>
+		<p>Pronounced like "Kess", &chi;ess is a variant that embodies the spirit of a child playing with the pieces without understanding how the game works.</p>
+		<h3>Configuration and Piece Movement</h3>
+		<p>Starting from the layout of a standard chess game, remove the knights from the board and slide the rooks inward to replace them. Now place the knights on top of the opposite colored rooks. What we now have on the board are four pieces known as "stacks", two stacks of black knights on white rooks, and two stacks of white knights on black rooks. </p>
+		<p>These hybrids can be controlled by one player as a rook, and by the other as a knight. Capturing conventions are as follows. A player can use their king or stack that they can control to capture any stack whose either piece is of the opposing color. In this case, the captured stack is annihilated (captured like in normal chess). When capturing a stack with any other piece, we have different behavior. Capturing a stack with any other piece requires that the top piece of the stack be the opposing color of the capturing player. Instead of the stack being annihilated, the top piece of the stack is replaced by the capturing piece. </p>
+		<p>As an example, a stack with a white knight on a black rook can be captured by a black bishop to create a stack with a black bishop on a black rook (comparable to a black queen). A different example is that a stack of a white knight on a black rook can be captured by a black pawn to create a black pawn on a black bishop. This stack has the interesting property that the pawn on top has the ability to promote. In order to do so, however, the stack must be on the second rank before it moves one square to the first rank, as promotion must come from a pawn move rather than a rook move.</p>
+		<h3>Discussion</h3>
+		<p>Notice that there is no castling in this variant, and that the king is immediately fairly hemmed in. The opposing knights on your rooks guard the two central squares in front of the king.</p>
+		<p>A common tactic in this variant relies on the pseudo-invincibility of the rook on the bottom of stacks. </p>
+		<h4>Questions</h4>
+		<p>What do viable opening strategies look like?</p>
+		<p>One idea I've discovered just through playing is to open a route for a bishop to immediately attack a knight above one of your own rooks to get a second "queen". Your opponent is either forced to allow this or give you a pawn-rook stack.</p>
+	</body>
+</html>

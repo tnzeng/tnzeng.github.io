@@ -1,0 +1,50 @@
+<html>
+<head>
+<link rel="stylesheet" href="../../style.css">
+<title> Tony Zeng - Chaos Game </title>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body>
+<h1>The Chaos Game</h1>
+<p><a href="https://en.wikipedia.org/wiki/Chaos_game">Wikipedia</a> has a perfectly reasonable explanation of the chaos game, so we won't re-explain it. What we will explore are some particularly nice examples of some restrictions and how we can think about some sort of continuity between different instances of the chaos game.</p>
+
+<p>We establish the following notation. Let \(V = \{ v_0, \ldots, v_{k - 1} \} \) be some set of points in \( \mathbb{R}^n \). For the time being, we will take \( n = 2 \) and \( v_i = (\cos(2\pi / k), \sin(2\pi / k)) \), with \( k > 2 \). Let \( R \) be a subset of \( \{0, \ldots, k - 1 \}\). Then we will say that \(C(V, R)\) is the restricted chaos game run on the polygon whose vertices are \(V\) and with the following restriction. If at any given step in the chaos game we had just chosen vertex \(v_i\) to jump towards, the next vertex we choose to jump towards must be \(v_{i + r}\) for some \(r \in R\), where we take addition to be modulo \(k\).</p>
+
+<p>Below are the three non-trivial unique (up to symmetries) chaos games for \(k = 3\).</p>
+<table>
+	<tr>
+		<td><img src="imgs/sierpinski.png" height="256"><br><br>\(R = \{0, 1, 2\}\)</td>
+		<td><img src="imgs/rotated.png" height="256"><br><br>\(R = \{0, 1\}\)</td>
+		<td><img src="imgs/centered.png" height="256"><br><br>\(R = \{1, 2\}\)</td>
+	</tr>
+</table>
+
+<p>Note that there is no significance of the yellow and purple. It's just a nice color gradient.</p>
+
+<p>If you'd like to play around with various restrictions and different values for \(k\), you can check out an interactive demo <a href="cgdemo.html">here</a>.</p>
+
+<h2>Observation</h2>
+
+<p>Let \(R = \{0, 1, k - 1\}\). What then happens, if we look at \(C(V, R)\) for various \(k\)?</p>
+<table>
+	<tr>
+		<td><img src="imgs/sierpinski.png" height="256"><br><br>\(k = 3\)</td>
+		<td><img src="imgs/obs4.png" height="256"><br><br>\(k = 4\)</td>
+		<td><img src="imgs/obs5.png" height="256"><br><br>\(k = 5\)</td>
+		<td><img src="imgs/obs6.png" height="256"><br><br>\(k = 6\)</td>
+	</tr>
+	<tr>
+		<td><img src="imgs/obs7.png" height="256"><br><br>\(k = 7\)</td>
+		<td><img src="imgs/obs8.png" height="256"><br><br>\(k = 8\)</td>
+		<td><img src="imgs/obs9.png" height="256"><br><br>\(k = 9\)</td>
+		<td><img src="imgs/obsT.png" height="256"><br><br>\(k = 10\)</td>
+	</tr>
+</table>
+
+<p>We notice that for larger values of \(k\), the resulting fractals are remarkably similar.</p>
+
+<p>Here is a demonstration of an idea that I will write up at some point: <a href="smooth_chaos.html">Link</a>.</p>
+
+</body>
+</html>
